@@ -9,6 +9,8 @@ import { UserContext } from "../../contexts/UserContext";
 import { SECONDARY_COLOR, WHITE } from "../../infrastructure/theme/colors";
 import { QATAR_HEAVY } from "../../infrastructure/theme/fonts";
 import { GradientContainer } from "../../infrastructure/theme/linearGradient.container";
+import axiosInstance from "../../services/axiosInstance";
+import { getUserDetails, registerUser } from "../../services/userService";
 
 const COUNTRY_FLAGS = {
   Qatar: require("./../../../assets/flags/qatar.png"),
@@ -64,8 +66,30 @@ export const RegisterView = ({ navigation }) => {
       country: Yup.string().required("Favorite country is required"),
     }),
     validateOnChange: false,
-    handleSubmit: (formValue) => {
-      console.log({ formValue });
+    onSubmit: (formValue) => {
+      console.log({ formValue })
+      registerUser(formValue).then((response) => {
+        const { token } = response.data.body;
+
+        console.log({ token });
+
+        axiosInstance.defaults.headers.common["authorization"] = "Bearer " + token;
+
+        getUserDetails()
+        .then((userResponse) => {
+          const userData = userResponse.data;
+
+          setUser(userData);
+
+          navigation.navigate("HomeMain");
+        })
+        .catch((detailsError) => {
+          console.log(detailsError.response.data);
+        })
+      })
+      .catch((axiosError) => {
+        console.log(axiosError.response.data);
+      })
     },
   });
 
@@ -117,7 +141,7 @@ export const RegisterView = ({ navigation }) => {
               onValueChange={(option) => formik.setFieldValue("country", option)}
             >
               {Object.keys(COUNTRY_FLAGS).map((country, i) => {
-                return <Option label={country} value={country} key={i}/>;
+                return <Option label={country} value={country} key={i} />;
               })}
             </Picker>
           </View>
