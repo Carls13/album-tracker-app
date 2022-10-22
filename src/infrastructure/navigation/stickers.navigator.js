@@ -5,14 +5,14 @@ import { View, Text } from "react-native";
 
 const Stack = createStackNavigator();
 
-export const AlbumNavigator = () => {
+export const StickersNavigator = () => {
   return (
     <Stack.Navigator headerMode="none">
       <Stack.Screen
         name="Main"
         component={() => (
           <View>
-            <Text>Album</Text>
+            <Text>Stickers</Text>
           </View>
         )}
       />

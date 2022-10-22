@@ -1,24 +1,61 @@
-import { StyleSheet, Text, Image } from "react-native"
-import { WHITE } from "../../infrastructure/theme/colors";
+/* eslint-disable import/namespace */
+import { useContext } from "react";
+import { StyleSheet, Text, View } from "react-native";
+
+import { FlagIcon } from "../../components/FlagIcon/flagIcon.component";
+import { UserContext } from "../../contexts/UserContext";
+import { SECONDARY_COLOR, WHITE } from "../../infrastructure/theme/colors";
+import { QATAR_BOLD, QATAR_HEAVY } from "../../infrastructure/theme/fonts";
 import { GradientContainer } from "../../infrastructure/theme/linearGradient.container";
 
 export const HomeView = () => {
-    return (
-        <GradientContainer>
-            {/* <Image source={{
-                    uri: 'https://www.citypng.com/public/uploads/preview/qatar-2022-fifa-world-cup-logo-hd-png-11649451618xooi1vfwgs.png',
-                    width: 100,
-                    height: 100
-                }} /> */}
-            <Text style={styles.title}>FIFA WORLD CUP QATAR 2022</Text>
-        </GradientContainer>
-    );
+  const { user } = useContext(UserContext);
+
+  return (
+    <GradientContainer>
+      <Text style={styles.title}>FIFA WORLD CUP QATAR 2022</Text>
+      <View style={styles.container}>
+        <Text style={styles.label}>Welcome, </Text>
+        <Text style={styles.name}>{user.username}</Text>
+      </View>
+      <View style={styles.container}>
+        <FlagIcon country={user.country} />
+        <Text style={styles.country}>{user.country}</Text>
+      </View>
+    </GradientContainer>
+  );
 };
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 36,
-        fontFamily: "Qatar2022-Bold",
-        color: WHITE
-    },
-})
+  title: {
+    fontSize: 36,
+    fontFamily: QATAR_BOLD,
+    color: WHITE,
+  },
+  container: {
+    width: "100%",
+    paddingHorizontal: 15,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  label: {
+    color: WHITE,
+    fontSize: 28,
+    textAlign: "center",
+    fontFamily: QATAR_HEAVY,
+  },
+  name: {
+    fontSize: 28,
+    color: SECONDARY_COLOR,
+    textAlign: "center",
+    fontFamily: QATAR_HEAVY,
+  },
+  country: {
+    color: WHITE,
+    fontSize: 24,
+    textAlign: "center",
+    fontFamily: QATAR_HEAVY,
+    marginLeft: 10,
+  },
+});

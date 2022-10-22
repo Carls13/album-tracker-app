@@ -2,52 +2,16 @@
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
 import { useContext } from "react";
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
 
+import { COUNTRY_FLAGS, FlagIcon } from "../../components/FlagIcon/flagIcon.component";
 import { UserContext } from "../../contexts/UserContext";
 import { SECONDARY_COLOR, WHITE } from "../../infrastructure/theme/colors";
 import { QATAR_HEAVY } from "../../infrastructure/theme/fonts";
 import { GradientContainer } from "../../infrastructure/theme/linearGradient.container";
 import axiosInstance from "../../services/axiosInstance";
 import { getUserDetails, registerUser } from "../../services/userService";
-
-const COUNTRY_FLAGS = {
-  Qatar: require("./../../../assets/flags/qatar.png"),
-  Ecuador: require("./../../../assets/flags/ecuador.png"),
-  Senegal: require("./../../../assets/flags/senegal.png"),
-  Netherlands: require("./../../../assets/flags/netherlands.png"),
-  England: require("./../../../assets/flags/england.png"),
-  Iran: require("./../../../assets/flags/iran.png"),
-  "United States": require("./../../../assets/flags/united-states.png"),
-  Wales: require("./../../../assets/flags/wales.png"),
-  Argentina: require("./../../../assets/flags/argentina.png"),
-  "Saudi Arabia": require("./../../../assets/flags/saudi-arabia.png"),
-  Mexico: require("./../../../assets/flags/mexico.png"),
-  Poland: require("./../../../assets/flags/poland.png"),
-  Australia: require("./../../../assets/flags/australia.png"),
-  Denmark: require("./../../../assets/flags/denmark.png"),
-  Tunisia: require("./../../../assets/flags/tunisia.png"),
-  Spain: require("./../../../assets/flags/spain.png"),
-  "Costa Rica": require("./../../../assets/flags/costa-rica.png"),
-  Germany: require("./../../../assets/flags/germany.png"),
-  Japan: require("./../../../assets/flags/japan.png"),
-  Belgium: require("./../../../assets/flags/belgium.png"),
-  Canada: require("./../../../assets/flags/canada.png"),
-  Morocco: require("./../../../assets/flags/morocco.png"),
-  Croatia: require("./../../../assets/flags/croatia.png"),
-  Serbia: require("./../../../assets/flags/serbia.png"),
-  Switzerland: require("./../../../assets/flags/switzerland.png"),
-  Cameroon: require("./../../../assets/flags/cameroon.png"),
-  Portugal: require("./../../../assets/flags/portugal.png"),
-  Ghana: require("./../../../assets/flags/ghana.png"),
-  Uruguay: require("./../../../assets/flags/uruguay.png"),
-  "South Korea": require("./../../../assets/flags/south-korea.png"),
-};
-
-export const mapCountryToFile = (country) => {
-  return COUNTRY_FLAGS[country];
-};
 
 export const RegisterView = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
@@ -67,35 +31,31 @@ export const RegisterView = ({ navigation }) => {
     }),
     validateOnChange: false,
     onSubmit: (formValue) => {
-      console.log({ formValue })
-      registerUser(formValue).then((response) => {
-        const { token } = response.data.body;
+      registerUser(formValue)
+        .then((response) => {
+          const { token } = response.data.body;
 
-        console.log({ token });
+          axiosInstance.defaults.headers.common["authorization"] = "Bearer " + token;
 
-        axiosInstance.defaults.headers.common["authorization"] = "Bearer " + token;
+          getUserDetails()
+            .then((userResponse) => {
+              const userData = userResponse.data.body;
 
-        getUserDetails()
-        .then((userResponse) => {
-          const userData = userResponse.data;
+              setUser(userData);
 
-          setUser(userData);
-
-          navigation.navigate("HomeMain");
+              navigation.navigate("HomeMain");
+            })
+            .catch((detailsError) => {
+              console.log(detailsError.response.data);
+            });
         })
-        .catch((detailsError) => {
-          console.log(detailsError.response.data);
-        })
-      })
-      .catch((axiosError) => {
-        console.log(axiosError.response.data);
-      })
+        .catch((axiosError) => {
+          console.log(axiosError.response.data);
+        });
     },
   });
 
   const Option = Picker.Item;
-
-  const url = mapCountryToFile(formik.values.country);
 
   const selectedCountry = formik.values.country;
 
@@ -134,7 +94,7 @@ export const RegisterView = ({ navigation }) => {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Favorite team</Text>
           <View style={styles.countryContainer}>
-            {selectedCountry && <Image style={styles.countryFlag} source={url} />}
+            {selectedCountry && <FlagIcon country={selectedCountry} />}
             <Picker
               selectedValue={selectedCountry}
               style={selectedCountry ? styles.select : styles.input}
@@ -224,7 +184,7 @@ const styles = StyleSheet.create({
     marginRight: "auto",
   },
   textButton: {
-    fontFamily: "Qatar2022-Heavy",
+    fontFamily: QATAR_HEAVY,
     color: "black",
     textAlign: "center",
   },
