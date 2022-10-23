@@ -1,11 +1,13 @@
 /* eslint-disable import/namespace */
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
 
+import { ErrorAlert } from "../../components/Alert/alert.component";
 import { COUNTRY_FLAGS, FlagIcon } from "../../components/FlagIcon/flagIcon.component";
+import { Spinner } from "../../components/Spinner/spinner.component";
 import { UserContext } from "../../contexts/UserContext";
 import { SECONDARY_COLOR, WHITE } from "../../infrastructure/theme/colors";
 import { QATAR_HEAVY } from "../../infrastructure/theme/fonts";
@@ -14,6 +16,8 @@ import axiosInstance from "../../services/axiosInstance";
 import { getUserDetails, registerUser } from "../../services/userService";
 
 export const RegisterView = ({ navigation }) => {
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { setUser } = useContext(UserContext);
 
   const formik = useFormik({
@@ -31,6 +35,7 @@ export const RegisterView = ({ navigation }) => {
     }),
     validateOnChange: false,
     onSubmit: (formValue) => {
+      setLoading(true);
       registerUser(formValue)
         .then((response) => {
           const { token } = response.data.body;
@@ -42,15 +47,18 @@ export const RegisterView = ({ navigation }) => {
               const userData = userResponse.data.body;
 
               setUser(userData);
+              setLoading(false);
 
               navigation.navigate("HomeMain");
             })
             .catch((detailsError) => {
-              console.log(detailsError.response.data);
+              setError(detailsError.response.data.body);
+              setLoading(false);
             });
         })
         .catch((axiosError) => {
-          console.log(axiosError.response.data);
+          setError(axiosError.response.data.body);
+          setLoading(false);
         });
     },
   });
@@ -100,6 +108,7 @@ export const RegisterView = ({ navigation }) => {
               style={selectedCountry ? styles.select : styles.input}
               onValueChange={(option) => formik.setFieldValue("country", option)}
             >
+              <Option label="Select a country..." value="" />
               {Object.keys(COUNTRY_FLAGS).map((country, i) => {
                 return <Option label={country} value={country} key={i} />;
               })}
@@ -107,9 +116,13 @@ export const RegisterView = ({ navigation }) => {
           </View>
         </View>
 
-        <TouchableOpacity onPress={formik.handleSubmit} style={styles.button}>
-          <Text style={styles.textButton}>Register</Text>
-        </TouchableOpacity>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <TouchableOpacity onPress={formik.handleSubmit} style={styles.button}>
+            <Text style={styles.textButton}>Register</Text>
+          </TouchableOpacity>
+        )}
 
         <View style={styles.returnLinkContainer}>
           <Text style={styles.returnLabel}>Already have an account? </Text>
@@ -123,6 +136,7 @@ export const RegisterView = ({ navigation }) => {
           </Text>
         </View>
       </View>
+      {error && <ErrorAlert title="Error" message={error} onPress={() => setError(null)} />}
     </GradientContainer>
   );
 };

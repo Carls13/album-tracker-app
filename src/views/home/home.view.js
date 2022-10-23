@@ -3,13 +3,15 @@ import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { FlagIcon } from "../../components/FlagIcon/flagIcon.component";
+import { SectionsContext } from "../../contexts/SectionsContext";
 import { UserContext } from "../../contexts/UserContext";
 import { SECONDARY_COLOR, WHITE } from "../../infrastructure/theme/colors";
 import { QATAR_BOLD, QATAR_HEAVY } from "../../infrastructure/theme/fonts";
 import { GradientContainer } from "../../infrastructure/theme/linearGradient.container";
 
 export const HomeView = () => {
-  const { user } = useContext(UserContext);
+  const { user, userProgress } = useContext(UserContext);
+  const { totalStickers } = useContext(SectionsContext);
 
   return (
     <GradientContainer>
@@ -18,9 +20,17 @@ export const HomeView = () => {
         <Text style={styles.label}>Welcome, </Text>
         <Text style={styles.name}>{user.username}</Text>
       </View>
-      <View style={styles.container}>
+      <View style={{...styles.container, marginBottom: 25 }}>
         <FlagIcon country={user.country} />
         <Text style={styles.country}>{user.country}</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.label}>Progress: {userProgress}</Text>
+        <Text style={styles.name}>/{totalStickers}</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.label}>Pending: {totalStickers - userProgress}</Text>
+        <Text style={styles.name}>/{totalStickers}</Text>
       </View>
     </GradientContainer>
   );

@@ -3,5 +3,6 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": false
     },
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "editor.tabSize": 2
 }

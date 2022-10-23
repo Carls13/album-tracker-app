@@ -6,6 +6,10 @@ export const registerUser = (userData) => {
   return axiosInstance.post(devUri, userData);
 };
 
+export const userLogin = (loginData) => {
+  return axiosInstance.post(`${devUri}/login`, loginData);
+};
+
 export const getUserDetails = () => {
   return axiosInstance.get(`${devUri}/details`);
 };
