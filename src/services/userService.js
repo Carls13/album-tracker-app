@@ -1,15 +1,15 @@
 import axiosInstance from "./axiosInstance";
 
-const devUri = "http://192.168.0.106:3000/user";
+const backendUri = "https://album-tracker-api.vercel.app/user";
 
 export const registerUser = (userData) => {
-  return axiosInstance.post(devUri, userData);
+  return axiosInstance.post(`${backendUri}/`, userData);
 };
 
 export const userLogin = (loginData) => {
-  return axiosInstance.post(`${devUri}/login`, loginData);
+  return axiosInstance.post(`${backendUri}/login`, loginData);
 };
 
 export const getUserDetails = () => {
-  return axiosInstance.get(`${devUri}/details`);
+  return axiosInstance.get(`${backendUri}/details`);
 };

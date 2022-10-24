@@ -1,15 +1,23 @@
 import axiosInstance from "./axiosInstance";
 
-const devUri = "http://192.168.0.106:3000/section";
+const backendUri = "https://album-tracker-api.vercel.app/section";
 
 export const getAllSections = () => {
-  return axiosInstance.get(`${devUri}/`);
+  return axiosInstance.get(`${backendUri}/`);
 };
 
 export const addCollectedSticker = (sectionKey, stickerName) => {
-  return axiosInstance.post(`${devUri}/${sectionKey}/sticker/${stickerName}`);
+  return axiosInstance.post(`${backendUri}/${sectionKey}/sticker/${stickerName}`);
 };
 
 export const removeCollectedSticker = (sectionKey, stickerName) => {
-  return axiosInstance.delete(`${devUri}/${sectionKey}/sticker/${stickerName}`);
+  return axiosInstance.delete(`${backendUri}/${sectionKey}/sticker/${stickerName}`);
+};
+
+export const addDuplicateSticker = (sectionKey, stickerName) => {
+  return axiosInstance.post(`${backendUri}/${sectionKey}/duplicate/${stickerName}`);
+};
+
+export const removeDuplicateSticker = (sectionKey, stickerName) => {
+  return axiosInstance.delete(`${backendUri}/${sectionKey}/duplicate/${stickerName}`);
 };

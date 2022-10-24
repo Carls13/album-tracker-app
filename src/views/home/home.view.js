@@ -10,7 +10,7 @@ import { QATAR_BOLD, QATAR_HEAVY } from "../../infrastructure/theme/fonts";
 import { GradientContainer } from "../../infrastructure/theme/linearGradient.container";
 
 export const HomeView = () => {
-  const { user, userProgress } = useContext(UserContext);
+  const { user, userProgress, totalDuplicates } = useContext(UserContext);
   const { totalStickers } = useContext(SectionsContext);
 
   return (
@@ -31,6 +31,10 @@ export const HomeView = () => {
       <View style={styles.container}>
         <Text style={styles.label}>Pending: {totalStickers - userProgress}</Text>
         <Text style={styles.name}>/{totalStickers}</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.label}>Duplicates: </Text>
+        <Text style={styles.name}>{totalDuplicates}</Text>
       </View>
     </GradientContainer>
   );

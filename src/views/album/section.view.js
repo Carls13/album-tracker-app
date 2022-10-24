@@ -1,8 +1,8 @@
 /* eslint-disable import/namespace */
 import { useContext } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Sticker } from "../../components/Sticker/sticker.component";
+import { ScrollView, StyleSheet, Text } from "react-native";
 
+import { Sticker } from "../../components/Sticker/sticker.component";
 import { UserContext } from "../../contexts/UserContext";
 import { SECONDARY_COLOR, WHITE } from "../../infrastructure/theme/colors";
 import { QATAR_BOLD } from "../../infrastructure/theme/fonts";
@@ -12,10 +12,11 @@ export const SectionView = ({ route }) => {
   const { user } = useContext(UserContext);
   const { section } = route.params;
 
-  const { title, order, amount, code, key } = section;
+  const { title, amount, key } = section;
   const { stickers, duplicates } = user;
 
   const userSectionProgress = stickers[key];
+  const userSectionDuplicates = duplicates[key];
 
   const collected = userSectionProgress?.length;
 
@@ -30,7 +31,12 @@ export const SectionView = ({ route }) => {
       <ScrollView contentContainerStyle={styles.stickersContainer} overScrollMode="always">
         {sectionStickers.map((_, i) => {
           return (
-            <Sticker stickerIndex={i} section={section} userSectionProgress={userSectionProgress} />
+            <Sticker
+              stickerIndex={i}
+              section={section}
+              userSectionProgress={userSectionProgress}
+              userSectionDuplicates={userSectionDuplicates}
+            />
           );
         })}
       </ScrollView>

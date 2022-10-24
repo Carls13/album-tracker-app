@@ -12,9 +12,23 @@ export const UserContextProvider = ({ children }) => {
     });
   };
 
+  const updateUserDuplicates = (newDuplicatesData) => {
+    setUser({
+      ...user,
+      duplicates: newDuplicatesData,
+    });
+  };
+
   let userProgress = 0;
   if (user?.stickers) {
     userProgress = Object.values(user?.stickers)?.reduce((currentCount, userSection) => {
+      return currentCount + userSection.length;
+    }, 0);
+  }
+
+  let totalDuplicates = 0;
+  if (user?.duplicates) {
+    totalDuplicates = Object.values(user?.duplicates)?.reduce((currentCount, userSection) => {
       return currentCount + userSection.length;
     }, 0);
   }
@@ -25,7 +39,9 @@ export const UserContextProvider = ({ children }) => {
         user,
         setUser,
         updateUserStickers,
+        updateUserDuplicates,
         userProgress,
+        totalDuplicates,
       }}
     >
       {children}
