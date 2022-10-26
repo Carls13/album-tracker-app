@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { FlagIcon } from "../../components/FlagIcon/flagIcon.component";
+import { QatarLogo } from "../../components/QatarLogo/qatarLogo.component";
 import { SectionsContext } from "../../contexts/SectionsContext";
 import { UserContext } from "../../contexts/UserContext";
 import { SECONDARY_COLOR, WHITE } from "../../infrastructure/theme/colors";
@@ -15,7 +16,7 @@ export const HomeView = () => {
 
   return (
     <GradientContainer>
-      <Text style={styles.title}>FIFA WORLD CUP QATAR 2022</Text>
+      <QatarLogo />
       <View style={styles.container}>
         <Text style={styles.label}>Welcome, </Text>
         <Text style={styles.name}>{user.username}</Text>
