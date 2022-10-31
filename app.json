@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/qatar-logo.png",
         "backgroundColor": "#300911"
-      }
+      },
+      "package": "com.carls13.albumtracker"
     },
     "web": {
       "favicon": "./assets/qatar-logo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a89d9c19-e779-41c0-afd8-241f70bc17b6"
+      }
     }
   }
 }
