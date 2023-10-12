@@ -1,6 +1,6 @@
 /* eslint-disable import/namespace */
 import { useContext } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import { FlagIcon } from "../../components/FlagIcon/flagIcon.component";
 import { QatarLogo } from "../../components/QatarLogo/qatarLogo.component";
@@ -17,32 +17,30 @@ export const HomeView = () => {
   const porcentage = (userProgress / totalStickers) * 100;
 
   return (
-    <ScrollView>
-      <GradientContainer>
-        <QatarLogo />
-        <View style={styles.container}>
-          <Text style={styles.label}>Welcome, </Text>
-          <Text style={styles.name}>{user.username}</Text>
-        </View>
-        <View style={{ ...styles.container, marginBottom: 25 }}>
-          <FlagIcon country={user.country} />
-          <Text style={styles.country}>{user.country}</Text>
-        </View>
-        <Text style={styles.porcentage}>{porcentage.toFixed(2)}%</Text>
-        <View style={styles.container}>
-          <Text style={styles.label}>Progress: {userProgress}</Text>
-          <Text style={styles.name}>/{totalStickers}</Text>
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.label}>Pending: {totalStickers - userProgress}</Text>
-          <Text style={styles.name}>/{totalStickers}</Text>
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.label}>Duplicates: </Text>
-          <Text style={styles.name}>{totalDuplicates}</Text>
-        </View>
-      </GradientContainer>
-    </ScrollView>
+    <GradientContainer>
+      <QatarLogo />
+      <View style={styles.container}>
+        <Text style={styles.label}>Welcome, </Text>
+        <Text style={styles.name}>{user.username}</Text>
+      </View>
+      <View style={{ ...styles.container, marginBottom: 25 }}>
+        <FlagIcon country={user.country} />
+        <Text style={styles.country}>{user.country}</Text>
+      </View>
+      <Text style={styles.porcentage}>{porcentage.toFixed(2)}%</Text>
+      <View style={styles.container}>
+        <Text style={styles.label}>Progress: {userProgress}</Text>
+        <Text style={styles.name}>/{totalStickers}</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.label}>Pending: {totalStickers - userProgress}</Text>
+        <Text style={styles.name}>/{totalStickers}</Text>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.label}>Duplicates: </Text>
+        <Text style={styles.name}>{totalDuplicates}</Text>
+      </View>
+    </GradientContainer>
   );
 };
 
